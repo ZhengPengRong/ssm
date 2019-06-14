@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE student SYSTEM "student.dtd">
+<!-- <books>
+		<book>
+				<name>java</name>
+				<price>30</price>
+		</book>
+		<book>
+				<name>English</name>
+				<price>50</price>
+				<sex>m</sex>
+		</book>
+</books> -->
+<students>
+			<student number="s0001">
+					<name number="s001">张三</name>
+					<age>男</age>
+					<sex>m</sex>
+			</student>
+</students>

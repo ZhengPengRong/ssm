@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation=" http://www.springframework.org/schema/mvc
+						    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+						    http://www.springframework.org/schema/context
+						    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		<context:component-scan base-package="com.itheima.**"/><!--开启包扫描-->			
+		<!--开启包扫描-->
+    	<context:component-scan base-package="com.itheima.**">
+	        <!--作为spring的子容器，springMVC不具有事务能力，即无法处理@service注解的事务rollback操作-->
+	        <!--如果在同一事务下的两个操作，其中有一条错误，那么理应受spring事务管理，一起rollback-->
+	        <!--如果仅仅写为<context:component-scan base-package="com.hellxz.**"/>-->
+	        <!--spring作为父容器会失去处理事务的能力，相当于被springMVC抢了-->
+	        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    	</context:component-scan>
+    	<!--使用fastjson解析json数据,需要注意的是一定要写在<mvc:annotation-driven前，否则失去解析作用-->
+	    <mvc:annotation-driven>
+	        <mvc:message-converters>
+	            <bean id="jsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+	                <property name="supportedMediaTypes">
+	                    <list>
+	                        <value>text/html;charset=utf-8</value>
+	                        <value>application/json;charset=utf-8</value>
+	                    </list>
+	                </property>
+	            </bean>
+	        </mvc:message-converters>
+	    </mvc:annotation-driven>
+    <!--开启MVC注解支持-->
+    <mvc:annotation-driven/>
+    <!--加载上下文注解配置-->
+    <context:annotation-config/>
+    <!--指明springmvc拦截器位置-->
+    <mvc:interceptors>
+        <!--全局拦截-->
+        <bean id="intercepter" class="com.itheima.interceptor.Interceptor"/>
+    </mvc:interceptors>
+    <!--视图解析器，controller返回的字符串在这里加上前缀&后缀，才能作为请求进入浏览器，最下方添加了jstl语句的支持-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    </bean>
+    <!--文件上传需要的设置-->
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="500000"/>
+        <property name="maxInMemorySize" value="1024000"/>
+        <property name="defaultEncoding" value="utf-8"/>
+    </bean>
+</beans>

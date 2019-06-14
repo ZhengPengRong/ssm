@@ -1,0 +1,16 @@
+<!ELEMENT students (student*)>    <!--申明一个元素（标签），第一行代表申明的是根标签；
+									"()"代表根标签里边可以写的标签
+									"*":代表子标签可以出现0次以上-->
+<!ELEMENT student (name,age,sex)> <!--申明一个student元素（标签），
+									name,age,sex分别代表子标签
+									","将子标签隔开，代表出现的顺序
+									-->
+<!ELEMENT name (#PCDATA)>		  <!--#PCDATA:代表标签内部可以写文本内容
+									-->
+<!ELEMENT age (#PCDATA)>
+<!ELEMENT sex (#PCDATA)>
+<!ATTLIST student number ID #REQUIRED><!--attribute list：代表可以在studnet
+                                                                                                         标签体中写属性,属性的名字为number,且属
+                                                                                                         性有一个ID,亦即属性值唯一,#REQUIRED代
+                                                                                                         表属性唯一-->
+<!ATTLIST name number ID #REQUIRED>                                                                                                         
